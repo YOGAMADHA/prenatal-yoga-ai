@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: prenatal-yoga-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: starter
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: POSE_MODEL_PATH
+        value: /models/pose_classifier.pkl
+      - key: YOGA_VIDEOS_CSV
+        value: /data/yoga_videos.csv
+      - key: KNOWLEDGE_CHUNKS_PATH
+        value: /data/knowledge/prenatal_qa_chunks.txt
+      - key: CORS_ORIGINS
+        sync: false
+
+  - type: web
+    name: prenatal-yoga-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    plan: starter
+    envVars:
+      - key: VITE_API_URL
+        sync: false
